@@ -1,0 +1,111 @@
+
+<div class="dash-header">
+  <div class="dash-title">
+      <h1>{{pageTitle}}</h1>
+  </div>
+</div>
+<div class="blog-form">
+  <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+    <div class="form-group form-row">
+      <label class="col-md-3">Title <span class="required">*</span></label>
+      <div class="col-md-9">
+        <input type="text" formControlName="title"  class="form-control" placeholder="Title" required>
+        <div *ngIf="f.title.invalid && (f.title.dirty || f.title.touched)" class="error">
+          <div *ngIf="f.title.errors">
+            Title is required.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group form-row">
+      <label class="col-md-3">Is Featured</label>
+      <div class="col-md-9">
+        <input type="radio" formControlName="is_featured" [value]="1" /> Yes
+        <input type="radio" formControlName="is_featured" [value]="0"/> No
+      </div>
+    </div>
+    <div class="form-group form-row">
+      <label class="col-md-3">Is Active</label>
+      <div class="col-md-9">
+        <input type="radio" formControlName="is_active" [value]="1" /> Yes
+        <input type="radio" formControlName="is_active" [value]="0" /> No
+      </div>
+    </div>
+    <div class="form-group form-row">
+      <label class="col-md-3">Upload Image</label>
+      <div class="col-md-9">
+        <input type="file" id="image" value="" formControlName="image" (change)="onSelectedFile($event)" />
+        <input type="hidden" value="" formControlName="hiddenimage"  />
+        <div [innerHTML]="uploadError" class="error"></div>
+        <div *ngIf="imagePath">
+          <br />
+          <img [src]="imagePath" width="100px">
+        </div>
+        <div *ngIf="f.image.invalid && (f.image.dirty || f.image.touched)" class="error">
+          <div *ngIf="f.image.errors.required">
+            Image is required.
+          </div>
+          <!-- <div *ngIf="f.image.errors.requiredFileType">
+            Allow only png extension image.
+          </div>
+          <div *ngIf="f.image.errors.limitUplodFileSize">
+            limitUplodFileSize.
+          </div> -->
+          
+        </div>
+        <div *ngIf="!f.image.invalid && f.hiddenimage.invalid && f.hiddenimage.errors.requiredFileType" class="error">
+          Allow only png extension image.
+        </div>
+        <div *ngIf="!f.image.invalid && f.hiddenimage.invalid && f.hiddenimage.errors.limitUplodFileSize" class="error">
+          Allow Maxium 2 MB Image.
+        </div>
+      </div>
+    </div>
+    <div class="form-group form-row">
+    <label class="col-md-3">Category*</label>
+    <div class="col-md-9">
+    <select class="custom-select"  formControlName="selcategory" required>
+      <option value="" >Choose your Category</option>
+      <option value="-1" >Category</option>
+      <option value="1" >Category-1</option>
+      <option *ngFor="let city of City" [ngValue]="city">{{city}}</option>
+    </select>
+      <div *ngIf="f.selcategory.invalid && (f.selcategory.dirty || f.selcategory.touched)" class="error">
+        <div *ngIf="f.selcategory.errors.required">
+          Category is required.
+        </div>
+        <div *ngIf="f.selcategory.errors.catVal">
+          Please select other Category.
+        </div>
+      </div>
+  </div>
+    </div>
+    <div class="form-group form-row">
+        <label class="col-md-3">Description <span class="required">*</span></label>
+        <div class="col-md-9">
+          <textarea formControlName="description" rows="5" class="form-control" placeholder="Description" required></textarea>
+          <div *ngIf="f.description.invalid && (f.description.dirty || f.description.touched)" class="error">
+            <div *ngIf="f.description.errors">
+              Description is required.
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="form-group form-row">
+      <label class="col-md-3">Terms<span class="required">*</span></label>
+      <div class="col-md-9">
+        <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" class="form-check-input"  />
+        <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
+        <div *ngIf="f.acceptTerms.errors" class="error">Accept Terms & Conditions is required</div>
+    </div>
+  </div>
+    <div class="form-group form-row">
+      <label class="col-md-3"></label>
+      <div class="col-md-9">
+        <input type="hidden" formControlName="id">
+        <!-- <button type="submit" class="btn btn-primary">Save</button> -->
+        <button type="submit" [disabled]="!blogForm.valid"  class="btn btn-primary">Save</button>
+      </div>
+  </div>
+  </form> 
+</div>
